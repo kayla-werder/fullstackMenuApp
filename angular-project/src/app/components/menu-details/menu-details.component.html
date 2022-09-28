@@ -1,0 +1,89 @@
+<div *ngIf="viewMode; else editable">
+  <div *ngIf="currentMenu.id">
+    <h4>Menu</h4>
+    <div>
+      <label><strong>Title:</strong></label> {{ currentMenu.title }}
+    </div>
+    <div>
+      <label><strong>Description:</strong></label>
+      {{ currentMenu.description }}
+    </div>
+    <div>
+      <label><strong>Price:</strong></label>
+      {{ currentMenu.price }}
+    </div>
+    <div>
+      <label><strong>Published:</strong></label>
+      {{ currentMenu.published ? "Published" : "Pending" }}
+    </div>
+
+    <a class="badge badge-warning" routerLink="/menus/{{ currentMenu.id }}">
+      Edit
+    </a>
+  </div>
+
+  <div *ngIf="!currentMenu">
+    <br />
+    <p>Please click on a Menu...</p>
+  </div>
+</div>
+
+<ng-template #editable>
+  <div *ngIf="currentMenu.id" class="edit-form">
+    <h4>{{ currentMenu.title }}</h4>
+    <form>
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input
+          type="text"
+          class="form-control"
+          id="title"
+          [(ngModel)]="currentMenu.title"
+          name="title"
+        />
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input
+          type="text"
+          class="form-control"
+          id="description"
+          [(ngModel)]="currentMenu.description"
+          name="description"
+        />
+      </div>
+
+      <div class="form-group">
+        <label><strong>Published:</strong></label>
+        {{ currentMenu.published ? "Published" : "Pending" }}
+      </div>
+    </form>
+
+    <button
+      class="btn btn-primary mr-2"
+      *ngIf="currentMenu.published"
+      (click)="updatePublished(false)"
+    >
+      Unpublish
+    </button>
+    <button
+      *ngIf="!currentMenu.published"
+      class="btn btn-primary mr-2"
+      (click)="updatePublished(true)"
+    >
+      Publish
+    </button>
+
+    <button class="btn btn-danger mr-2" (click)="deleteMenu()">Delete</button>
+
+    <button type="submit" class="btn btn-success mr-2" (click)="updateMenu()">
+      Update
+    </button>
+    <p>{{ message }}</p>
+  </div>
+
+  <div *ngIf="!currentMenu.id">
+    <br />
+    <p>Cannot access this menu...</p>
+  </div>
+</ng-template>
